@@ -7,6 +7,7 @@ on:
     # 6am on Sunday.
     schedule:
         - cron: "0 6 * * 0"
+
 jobs:
     build:
         name: Build and publish Chicken OS.
@@ -17,13 +18,16 @@ jobs:
         steps:
             - name: Clone code.
               uses: actions/checkout@v4
-            - name: Create image.
+
+            - name: Build image.
+              id: build-image
               uses: redhat-actions/buildah-build@v2
               with:
                   image: ${{ env.IMAGE_NAME }}
                   tags: latest ${{ github.sha }}
                   containerfiles: |
-                    ./Containerfile                    
+                    ./Containerfile
+
             - name: Log in to the GitHub Container registry
               uses: redhat-actions/podman-login@v1
               with:
