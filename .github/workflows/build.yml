@@ -6,7 +6,7 @@ on:
             - main
     # 6am on Sunday.
     schedule:
-        - crom: "0 6 * * 7"
+        - cron: "0 6 * * 0"
 jobs:
     build:
         name: Build and publish Chicken OS.
