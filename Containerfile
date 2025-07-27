@@ -13,7 +13,13 @@ RUN dnf install -y \
 RUN dnf clean all
 
 # Enable services
-RUN systemctl enable tailscaled
+RUN systemctl enable cockpit.service && \
+  systemctl enable docker.service && \
+  systemctl enable nfs-server.service && \
+  systemctl enable tailscaled.service
+
+# Copy config
+COPY configuration/zram-generator.conf /usr/lib/systemd/zram-generator.conf
 
 # Lint should be final step.
 RUN bootc container lint
