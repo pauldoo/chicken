@@ -21,7 +21,6 @@ RUN systemctl enable cockpit.service && \
 # Copy config
 COPY configuration/zram-generator.conf /usr/lib/systemd/
 COPY configuration/test-etc /etc/
-COPY configuration/test-usr-etc /usr/etc/
 
 # Lint should be final step.
 RUN bootc container lint
