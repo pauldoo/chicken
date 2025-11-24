@@ -30,8 +30,7 @@ podman run --rm \
 echo "Backing up."
 
 # Restic finds the most recent snapshot in the repository and uses metadata
-# from that to minimize the number of files it scans locally. Immich uses
-# the hostname to identify the correct most recent snapshot.
+# from that to minimize the number of files it scans locally.
 # Since we backup multiple machines and different folders to restic, I set
 # the hostname explicitly to ensure the most relevant snapshot is found.
 podman run --rm \
