@@ -12,17 +12,20 @@ RUN dnf install -y \
 # Cleanup
 RUN dnf clean all
 
-# Enable services
-RUN systemctl enable cockpit.service && \
-  systemctl enable docker.service && \
-  systemctl enable nfs-server.service && \
-  systemctl enable tailscaled.service
-
 # Copy config
 COPY configuration /etc/
 
 # Copy scripts
 COPY scripts /usr/bin/
+
+# Enable system services
+RUN systemctl enable cockpit.service && \
+  systemctl enable docker.service && \
+  systemctl enable nfs-server.service && \
+  systemctl enable tailscaled.service
+
+# Enable custom services
+RUN systemctl enable bootc-auto-reboot.timer
 
 # Lint should be final step.
 RUN bootc container lint

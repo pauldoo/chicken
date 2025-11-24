@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer for bootc deployment check and reboot
+Requires=bootc-auto-reboot.service
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+

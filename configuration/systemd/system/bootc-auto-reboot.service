@@ -1,0 +1,12 @@
+[Unit]
+Description=Check for pending bootc deployment and reboot if needed
+Wants=bootc-auto-reboot.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/bootc-check-and-reboot
+User=root
+
+[Install]
+WantedBy=multi-user.target
+
