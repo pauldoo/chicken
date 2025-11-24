@@ -7,6 +7,7 @@ FROM ghcr.io/ublue-os/ucore-hci:stable
 
 # DNF installs.
 RUN dnf install -y \
+  fish \
   micro
 
 # Cleanup
