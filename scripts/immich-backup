@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -ex
+
+SOURCE_PATH="/var/opt/immich/library"
+SNAPSHOT_PATH="${SOURCE_PATH}.snapshot"
+
+function cleanup() {
+  if [ -d "${SNAPSHOT_PATH}" ]; then
+    btrfs subvolume delete "${SNAPSHOT_PATH}"
+  fi
+}
+
+cleanup
+trap cleanup EXIT
+
+btrfs subvolume snapshot -r "${SOURCE_PATH}" "${SNAPSHOT_PATH}"
+
+echo "Checking repository."
+
+podman run --rm \
+  --secret backups-aws-access-key,type=env,target=AWS_ACCESS_KEY_ID \
+  --secret backups-aws-secret-key,type=env,target=AWS_SECRET_ACCESS_KEY \
+  --secret backups-restic-password,type=env,target=RESTIC_PASSWORD \
+  -e RESTIC_REPOSITORY="s3:s3.eu-west-2.amazonaws.com/restic.pauldoo.com" \
+  ghcr.io/restic/restic \
+  check \
+  --verbose
+
+echo "Backing up."
+
+# Restic finds the most recent snapshot in the repository and uses metadata
+# from that to minimize the number of files it scans locally. Immich uses
+# the hostname to identify the correct most recent snapshot.
+# Since we backup multiple machines and different folders to restic, I set
+# the hostname explicitly to ensure the most relevant snapshot is found.
+podman run --rm \
+  -v "${SNAPSHOT_PATH}":/data:ro \
+  --secret backups-aws-access-key,type=env,target=AWS_ACCESS_KEY_ID \
+  --secret backups-aws-secret-key,type=env,target=AWS_SECRET_ACCESS_KEY \
+  --secret backups-restic-password,type=env,target=RESTIC_PASSWORD \
+  -e RESTIC_PROGRESS_FPS="0.002" \
+  -e RESTIC_REPOSITORY="s3:s3.eu-west-2.amazonaws.com/restic.pauldoo.com" \
+  ghcr.io/restic/restic \
+  backup /data \
+  --verbose \
+  --host immich \
+  --one-file-system \
+  --tag daily \
+  --tag immich \
+  --tag test \
+  --exclude-caches
+
+#  --limit-upload 3072 \
+
+echo "Backup completed."

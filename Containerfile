@@ -21,5 +21,8 @@ RUN systemctl enable cockpit.service && \
 # Copy config
 COPY configuration /etc/
 
+# Copy scripts
+COPY scripts /usr/bin/
+
 # Lint should be final step.
 RUN bootc container lint
