@@ -1,0 +1,12 @@
+[Unit]
+Description=Restic backups
+Wants=restic-backups.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/immich-backup
+User=root
+
+[Install]
+WantedBy=multi-user.target
+

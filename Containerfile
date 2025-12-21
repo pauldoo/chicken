@@ -23,7 +23,8 @@ RUN systemctl enable cockpit.service && \
   systemctl enable tailscaled.service
 
 # Enable custom services
-RUN systemctl enable bootc-auto-reboot.timer
+RUN systemctl enable bootc-auto-reboot.timer && \
+  systemctl disable restic-backups.timer
 
 # Lint should be final step.
 RUN bootc container lint
