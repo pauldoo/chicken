@@ -13,11 +13,8 @@ RUN dnf install -y \
 # Cleanup
 RUN dnf clean all
 
-# Copy config
-COPY configuration /etc/
-
-# Copy scripts
-COPY scripts /usr/bin/
+# Copy custom files.
+COPY content /
 
 # Enable system services
 RUN systemctl enable cockpit.service && \
