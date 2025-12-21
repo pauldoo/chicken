@@ -5,6 +5,7 @@ Requires=bootc-auto-reboot.service
 [Timer]
 OnCalendar=*-*-* 02:00:00
 Persistent=true
+AccuracySec=1h
 
 [Install]
 WantedBy=timers.target

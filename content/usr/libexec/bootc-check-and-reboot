@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+"""
+Script to check for pending bootc deployment and reboot if needed.
+
+This script is executed by the bootc-auto-reboot.service systemd unit,
+which is triggered daily at 2:00 AM by the bootc-auto-reboot.timer.
+
+MANUAL CONTROL:
+To temporarily disable automatic reboots (until next system reboot):
+    sudo systemctl stop bootc-auto-reboot.timer
+
+To resume automatic reboots without waiting for system reboot:
+    sudo systemctl start bootc-auto-reboot.timer
+
+To check the current status and next scheduled run:
+    sudo systemctl status bootc-auto-reboot.timer
+    sudo systemctl list-timers bootc-auto-reboot.timer
+
+To view logs from this script:
+    sudo journalctl -u bootc-auto-reboot.service
+"""
+
+import json
+import subprocess
+import sys
+import shutil
+
+
+def run_command(cmd, capture_output=True, check=True):
+    """Run a command and return the result."""
+    try:
+        result = subprocess.run(
+            cmd, 
+            shell=True, 
+            capture_output=capture_output, 
+            text=True, 
+            check=check
+        )
+        return result
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed: {cmd}", file=sys.stderr)
+        print(f"Error: {e}", file=sys.stderr)
+        raise
+
+
+def main():
+    print("Starting bootc deployment check")
+    
+    # Check if bootc command exists
+    if not shutil.which("bootc"):
+        print("ERROR: bootc command not found", file=sys.stderr)
+        sys.exit(1)
+    
+    try:
+        # Get bootc status as JSON
+        result = run_command("bootc status --json")
+        status_data = json.loads(result.stdout)
+        
+        # Check if there's a staged deployment
+        if status_data.get("status", {}).get("staged") is not None:
+            print("Pending bootc deployment detected - initiating reboot")
+            
+            # Show the current and staged deployments for reference
+            run_command("bootc status", capture_output=False)
+            
+            # Reboot the system
+            run_command("systemctl reboot", capture_output=False)
+        else:
+            print("No pending bootc deployment found - no action needed")
+            
+    except (json.JSONDecodeError, subprocess.CalledProcessError) as e:
+        print(f"Error checking bootc status: {e}", file=sys.stderr)
+        sys.exit(1)
+    
+    print("bootc deployment check completed")
+
+
+if __name__ == "__main__":
+    main()
+

@@ -4,7 +4,7 @@ Wants=bootc-auto-reboot.timer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/bootc-check-and-reboot
+ExecStart=/usr/libexec/bootc-check-and-reboot
 User=root
 
 [Install]
