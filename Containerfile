@@ -1,5 +1,5 @@
 #FROM quay.io/fedora/fedora-bootc:41
-FROM ghcr.io/ublue-os/ucore-hci:stable
+FROM ghcr.io/ublue-os/ucore-hci:lts
 
 # Configure DNF with external repos.
 #RUN dnf install -y 'dnf5-command(config-manager)'
