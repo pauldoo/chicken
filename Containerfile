@@ -21,7 +21,8 @@ COPY content /
 RUN systemctl enable cockpit.service && \
   systemctl enable docker.service && \
   systemctl enable nfs-server.service && \
-  systemctl enable tailscaled.service
+  systemctl enable tailscaled.service && \
+  systemctl enable tuned.service
 
 # Enable custom services
 RUN systemctl enable bootc-auto-reboot.timer && \
