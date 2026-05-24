@@ -11,6 +11,10 @@ RUN dnf install -y \
   micro \
   wget
 
+# Print available updates, just for interest so I can see if any
+# haven't been applied in the uCore base image already.
+RUN dnf check-update || true
+
 # Cleanup
 RUN dnf clean all
 
