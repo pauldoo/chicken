@@ -1,0 +1,49 @@
+[Unit]
+Description=OpenClaw Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Use the official pre-built image.
+# Pin to a specific version tag once stable; "latest" is fine for initial setup.
+Image=ghcr.io/openclaw/openclaw:latest
+
+UserNS=auto
+
+# Secrets and API credentials — never baked into the image.
+# Create this file manually on the host after first boot.
+# See /etc/openclaw/secrets.env.example for the expected keys.
+EnvironmentFile=/etc/openclaw/secrets.env
+
+# Runtime config that is safe to ship in the image.
+Environment=NODE_ENV=production
+Environment=OPENCLAW_GATEWAY_BIND=lan
+Environment=OPENCLAW_DISABLE_BONJOUR=1
+Environment=OPENCLAW_NO_RESPAWN=1
+
+# Persistent state — bind-mount host directory into container.
+# /var/opt/openclaw lives in /var, which is mutable and survives bootc upgrades.
+Volume=/var/opt/openclaw:/home/node/.openclaw:Z
+
+# Isolated network — no LAN access, outbound internet only.
+Network=openclaw.network
+
+# Publish gateway port on loopback only.
+# Not exposed to LAN; access via Tailscale or SSH tunnel.
+PublishPort=127.0.0.1:18789:18789
+
+# Security hardening.
+NoNewPrivileges=true
+ReadOnlyTmpfs=true
+
+# Pull policy: only pull if image is not already present locally.
+# For bootc embedded images, "never" would be used instead.
+Pull=missing
+
+[Service]
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target default.target

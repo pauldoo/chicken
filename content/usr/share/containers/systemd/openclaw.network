@@ -1,0 +1,5 @@
+[Network]
+# Isolated network for OpenClaw.
+# No access to host LAN or other container networks (e.g. Immich).
+# Outbound internet access only (for Bedrock API and Matrix).
+Label=app=openclaw
