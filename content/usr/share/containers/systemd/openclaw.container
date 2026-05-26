@@ -38,7 +38,7 @@ ReadOnlyTmpfs=true
 
 # Pull policy: only pull if image is not already present locally.
 # For bootc embedded images, "never" would be used instead.
-Pull=missing
+Pull=newer
 
 [Service]
 Restart=on-failure
