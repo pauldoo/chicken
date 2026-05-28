@@ -11,10 +11,6 @@ RUN dnf install -y \
   micro \
   wget
 
-# Print available updates, just for interest so I can see if any
-# haven't been applied in the uCore base image already.
-RUN dnf check-update || true
-
 # Cleanup
 RUN dnf clean all
 
@@ -31,6 +27,9 @@ RUN systemctl enable cockpit.service && \
 # Enable custom services
 RUN systemctl enable bootc-auto-reboot.timer && \
   systemctl disable restic-backups.timer
+
+# Enable sshd to listen on the additional port
+RUN semanage port -a -t ssh_port_t -p tcp 122
 
 # Lint should be final step.
 RUN bootc container lint
