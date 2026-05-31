@@ -10,6 +10,7 @@ RUN dnf install -y \
   fish \
   micro \
   miniupnpc \
+  tcpdump \
   wget
 
 # Cleanup
