@@ -1,10 +1,10 @@
 [Unit]
-Description=Refresh UPnP SSH port forward every 3 hours
+Description=Periodic refresh of UPnP SSH port forward
 Requires=upnp-ssh-forward.service
 
 [Timer]
 OnBootSec=30sec
-OnUnitActiveSec=3h
+OnUnitActiveSec=1hr30min
 
 [Install]
 WantedBy=timers.target

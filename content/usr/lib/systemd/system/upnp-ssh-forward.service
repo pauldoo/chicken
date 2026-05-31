@@ -6,4 +6,4 @@ Wants=upnp-ssh-forward.timer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/upnpc -r 122 TCP
+ExecStart=/usr/bin/upnpc -a @ 122 122 TCP 7200
