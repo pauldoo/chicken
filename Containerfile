@@ -9,6 +9,7 @@ FROM ghcr.io/ublue-os/ucore-hci:lts
 RUN dnf install -y \
   fish \
   micro \
+  miniupnpc \
   wget
 
 # Cleanup
