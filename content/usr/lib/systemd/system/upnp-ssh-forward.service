@@ -1,9 +1,0 @@
-[Unit]
-Description=Refresh UPnP port forward for SSH (port 122)
-After=network-online.target
-Wants=network-online.target
-Wants=upnp-ssh-forward.timer
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/upnpc -a @ 122 122 TCP 7200

@@ -25,7 +25,7 @@ RUN \
 RUN \
   systemctl enable bootc-auto-reboot.timer && \
   systemctl disable restic-backups.timer && \
-  systemctl enable upnp-ssh-forward.timer
+  systemctl enable upnp-port-forwards.timer
 
 # Enable sshd to listen on the additional port
 RUN semanage port -a -t ssh_port_t -p tcp 122

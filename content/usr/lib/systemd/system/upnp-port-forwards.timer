@@ -1,6 +1,6 @@
 [Unit]
-Description=Periodic refresh of UPnP SSH port forward
-Requires=upnp-ssh-forward.service
+Description=Periodic refresh of UPnP port forwards
+Requires=upnp-port-forwards.service
 
 [Timer]
 OnBootSec=30sec
