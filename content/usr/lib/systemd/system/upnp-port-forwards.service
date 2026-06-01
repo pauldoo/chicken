@@ -6,5 +6,6 @@ Wants=upnp-port-forwards.timer
 
 [Service]
 Type=oneshot
+ExecStart=/usr/bin/upnpc -a @ 122 122 TCP 7200
 ExecStart=/usr/bin/upnpc -a @ 1443 1443 TCP 7200
 ExecStart=/usr/bin/upnpc -a @ 2443 2443 TCP 7200
