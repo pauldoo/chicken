@@ -23,7 +23,7 @@ Environment=OPENCLAW_NO_RESPAWN=1
 
 # Persistent state — bind-mount host directory into container.
 # /var/opt/openclaw lives in /var, which is mutable and survives bootc upgrades.
-Volume=/var/opt/openclaw:/home/node/.openclaw:Z
+Volume=/var/opt/openclaw:/home/node/.openclaw:z
 
 # Isolated network — no LAN access, outbound internet only.
 Network=openclaw.network
