@@ -1,0 +1,34 @@
+(common) {
+    tls {
+        dns route53
+    }
+
+    handle /nothing {
+        respond 200
+    }
+
+    @ungated {
+      not expression `{cookie.caddy_gate} == {env.COOKIE_GATE_SECRET}`
+    }
+
+    respond @ungated 401
+}
+
+{$EXTERNAL_HOSTNAME}:1443 {
+    import common
+    reverse_proxy localhost:9090
+}
+
+{$EXTERNAL_HOSTNAME}:2443 {
+    import common
+
+    handle /static/workspace/* {
+        respond @ungated 401
+
+        root * /srv/openclaw-workspace
+        uri strip_prefix /static/workspace
+        file_server browse
+    }
+
+    reverse_proxy localhost:18789
+}

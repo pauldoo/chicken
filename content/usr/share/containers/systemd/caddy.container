@@ -1,0 +1,25 @@
+[Unit]
+Description=Caddy reverse proxy
+After=network-online.target
+
+[Container]
+Image=localhost/caddy:latest
+
+PublishPort=1443:1443
+PublishPort=2443:2443
+
+Volume=/usr/share/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+Volume=/var/opt/openclaw/workspace:/srv/openclaw-workspace:ro,z
+Volume=caddy_data:/data
+Volume=caddy_config:/config
+
+Network=host
+
+EnvironmentFile=/etc/caddy/secrets.env
+
+[Service]
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

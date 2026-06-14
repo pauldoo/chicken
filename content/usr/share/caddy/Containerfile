@@ -1,0 +1,12 @@
+FROM docker.io/library/caddy:builder AS builder
+
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    xcaddy build \
+    --with github.com/caddy-dns/route53
+
+FROM docker.io/library/caddy:latest
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
+# Build with:
+# podman build -t localhost/caddy /usr/share/caddy
