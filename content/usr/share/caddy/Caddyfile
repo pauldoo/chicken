@@ -32,3 +32,8 @@
 
     reverse_proxy localhost:18789
 }
+
+{$EXTERNAL_HOSTNAME}:3443 {
+    import common
+    reverse_proxy localhost:42617
+}
