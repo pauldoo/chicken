@@ -6,8 +6,8 @@ Wants=upnp-port-forwards.timer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/upnpc -a @ 122 122 TCP 7200
-ExecStart=/usr/bin/upnpc -a @ 1443 1443 TCP 7200
-ExecStart=/usr/bin/upnpc -a @ 3443 3443 TCP 7200
+ExecStart=/usr/bin/upnpc -u http://192.168.4.1:1900/igd.xml -a @ 122 122 TCP 7200
+ExecStart=/usr/bin/upnpc -u http://192.168.4.1:1900/igd.xml -a @ 1443 1443 TCP 7200
+ExecStart=/usr/bin/upnpc -u http://192.168.4.1:1900/igd.xml -a @ 3443 3443 TCP 7200
 Restart=on-failure
 RestartSec=30s
