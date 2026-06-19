@@ -35,5 +35,14 @@
 
 {$EXTERNAL_HOSTNAME}:3443 {
     import common
+
+    handle /static/agents/* {
+        respond @ungated 401
+
+        root * /srv/zeroclaw-agents
+        uri strip_prefix /static/agents
+        file_server browse
+    }
+
     reverse_proxy localhost:42617
 }

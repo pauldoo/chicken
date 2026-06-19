@@ -7,9 +7,11 @@ Image=localhost/caddy:latest
 
 PublishPort=1443:1443
 PublishPort=2443:2443
+PublishPort=3443:3443
 
 Volume=/usr/share/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
 Volume=/var/opt/openclaw/workspace:/srv/openclaw-workspace:ro,z
+Volume=/var/opt/zeroclaw/.zeroclaw/agents:/srv/zeroclaw-agents:ro,z
 Volume=caddy_data:/data
 Volume=caddy_config:/config
 
