@@ -18,8 +18,8 @@ RUN mkdir -p /repo/docs/book/src/reference \
 # ── Final image ──────────────────────────────────────────────────
 FROM ghcr.io/zeroclaw-labs/zeroclaw:debian
 
-COPY --from=checkout /repo /opt/zeroclaw-docs/repo
-COPY docs-README.md /opt/zeroclaw-docs/README.md
+COPY --from=checkout /repo /extras/zeroclaw-docs/repo
+COPY docs-README.md /extras/zeroclaw-docs/README.md
 
 # Build with:
 # sudo podman build -t localhost/zeroclaw /usr/share/zeroclaw
