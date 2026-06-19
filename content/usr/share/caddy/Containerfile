@@ -9,4 +9,4 @@ FROM docker.io/library/caddy:latest
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 # Build with:
-# podman build -t localhost/caddy /usr/share/caddy
+# sudo podman build -t localhost/caddy /usr/share/caddy

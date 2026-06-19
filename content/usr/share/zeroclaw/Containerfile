@@ -22,4 +22,4 @@ COPY --from=checkout /repo /opt/zeroclaw-docs/repo
 COPY docs-README.md /opt/zeroclaw-docs/README.md
 
 # Build with:
-# podman build -t localhost/zeroclaw /usr/share/zeroclaw
+# sudo podman build -t localhost/zeroclaw /usr/share/zeroclaw
