@@ -4,6 +4,7 @@ Wants=restic-backups.timer
 
 [Service]
 Type=oneshot
+ExecStart=/usr/libexec/zeroclaw-backup
 ExecStart=/usr/libexec/immich-backup
 User=root
 

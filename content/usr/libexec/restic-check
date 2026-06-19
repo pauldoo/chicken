@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Verify the integrity of the restic repository.
+
+set -ex
+
+echo "Pulling latest restic image."
+
+podman pull --policy=newer ghcr.io/restic/restic
+
+echo "Checking repository."
+
+podman run --rm \
+  --secret backups-aws-access-key,type=env,target=AWS_ACCESS_KEY_ID \
+  --secret backups-aws-secret-key,type=env,target=AWS_SECRET_ACCESS_KEY \
+  --secret backups-restic-password,type=env,target=RESTIC_PASSWORD \
+  -e RESTIC_REPOSITORY="s3:s3.eu-west-2.amazonaws.com/restic.pauldoo.com" \
+  ghcr.io/restic/restic \
+  check \
+  --verbose
+
+echo "Check completed."

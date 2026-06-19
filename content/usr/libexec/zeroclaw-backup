@@ -2,7 +2,7 @@
 
 set -ex
 
-SOURCE_PATH="/var/opt/immich/library"
+SOURCE_PATH="/var/opt/zeroclaw"
 SNAPSHOT_PATH="${SOURCE_PATH}.snapshot"
 
 function cleanup() {
@@ -16,4 +16,4 @@ trap cleanup EXIT
 
 btrfs subvolume snapshot -r "${SOURCE_PATH}" "${SNAPSHOT_PATH}"
 
-/usr/libexec/restic-backup "${SNAPSHOT_PATH}" immich daily immich
+/usr/libexec/restic-backup "${SNAPSHOT_PATH}" zeroclaw daily zeroclaw

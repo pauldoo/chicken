@@ -1,0 +1,10 @@
+[Unit]
+Description=Restic repository integrity check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/restic-check
+User=root
+
+[Install]
+WantedBy=multi-user.target

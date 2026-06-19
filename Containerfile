@@ -27,6 +27,7 @@ RUN \
   systemctl enable container-rebuild-caddy.timer && \
   systemctl enable container-rebuild-zeroclaw.timer && \
   systemctl disable restic-backups.timer && \
+  systemctl enable restic-check.timer && \
   systemctl enable upnp-port-forwards.timer
 
 # Enable sshd to listen on the additional port

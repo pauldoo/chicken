@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# Usage: restic-backup <source-path> <host> <tag> [<tag>...]
+#
+# Runs a restic backup of <source-path> to the configured S3 repository,
+# using podman secrets for credentials.
+
+set -ex
+
+SOURCE_PATH="$1"
+HOST="$2"
+shift 2
+TAGS=("$@")
+
+if [ -z "${SOURCE_PATH}" ] || [ -z "${HOST}" ] || [ ${#TAGS[@]} -eq 0 ]; then
+  echo "Usage: restic-backup <source-path> <host> <tag> [<tag>...]" >&2
+  exit 1
+fi
+
+TAG_ARGS=()
+for tag in "${TAGS[@]}"; do
+  TAG_ARGS+=(--tag "${tag}")
+done
+
+echo "Backing up."
+
+podman run --rm \
+  -v "${SOURCE_PATH}":/data:ro \
+  --secret backups-aws-access-key,type=env,target=AWS_ACCESS_KEY_ID \
+  --secret backups-aws-secret-key,type=env,target=AWS_SECRET_ACCESS_KEY \
+  --secret backups-restic-password,type=env,target=RESTIC_PASSWORD \
+  -e RESTIC_PROGRESS_FPS="0.002" \
+  -e RESTIC_REPOSITORY="s3:s3.eu-west-2.amazonaws.com/restic.pauldoo.com" \
+  ghcr.io/restic/restic \
+  backup /data \
+  --verbose \
+  --host "${HOST}" \
+  --one-file-system \
+  "${TAG_ARGS[@]}" \
+  --exclude-caches
+
+echo "Backup completed."
