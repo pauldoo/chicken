@@ -1,0 +1,25 @@
+FROM ghcr.io/zeroclaw-labs/zeroclaw:debian AS checkout
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends git
+
+# Clone the repo at the tag matching the installed binary
+RUN ZEROCLAW_VERSION=$(zeroclaw --version | awk '{print $2}') \
+    && git clone --branch "v${ZEROCLAW_VERSION}" \
+       https://github.com/zeroclaw-labs/zeroclaw.git \
+       /repo
+
+# Generate reference docs from the binary
+RUN mkdir -p /repo/docs/book/src/reference \
+    && zeroclaw markdown-help > /repo/docs/book/src/reference/cli.md \
+    && zeroclaw markdown-schema > /repo/docs/book/src/reference/config.md
+
+# ── Final image ──────────────────────────────────────────────────
+FROM ghcr.io/zeroclaw-labs/zeroclaw:debian
+
+COPY --from=checkout /repo /opt/zeroclaw-docs/repo
+COPY docs-README.md /opt/zeroclaw-docs/README.md
+
+# Build with:
+# podman build -t localhost/zeroclaw /usr/share/zeroclaw

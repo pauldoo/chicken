@@ -24,6 +24,8 @@ RUN \
 # Enable custom services
 RUN \
   systemctl enable bootc-auto-reboot.timer && \
+  systemctl enable container-rebuild-caddy.timer && \
+  systemctl enable container-rebuild-zeroclaw.timer && \
   systemctl disable restic-backups.timer && \
   systemctl enable upnp-port-forwards.timer
 

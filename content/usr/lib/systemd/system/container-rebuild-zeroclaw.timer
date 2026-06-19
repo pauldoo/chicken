@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly rebuild of local zeroclaw container image
+Requires=container-rebuild-zeroclaw.service
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

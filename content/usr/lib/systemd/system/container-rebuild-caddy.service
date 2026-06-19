@@ -1,0 +1,9 @@
+[Unit]
+Description=Rebuild local caddy container image
+
+[Service]
+Type=oneshot
+ExecStart=podman build -t localhost/caddy /usr/share/caddy
+
+[Install]
+WantedBy=multi-user.target

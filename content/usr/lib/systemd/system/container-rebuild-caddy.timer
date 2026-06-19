@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly rebuild of local caddy container image
+Requires=container-rebuild-caddy.service
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

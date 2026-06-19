@@ -1,0 +1,9 @@
+[Unit]
+Description=Rebuild local zeroclaw container image
+
+[Service]
+Type=oneshot
+ExecStart=podman build -t localhost/zeroclaw /usr/share/zeroclaw
+
+[Install]
+WantedBy=multi-user.target

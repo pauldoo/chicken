@@ -7,8 +7,8 @@ Wants=network-online.target
 UserNS=auto
 EnvironmentFile=/etc/zeroclaw/secrets.env
 
-# Pin a release in production; :latest is distroless (no shell — use :debian to exec a shell).
-Image=ghcr.io/zeroclaw-labs/zeroclaw:debian
+# Custom image with bundled docs & source (built from /usr/share/zeroclaw/Containerfile)
+Image=localhost/zeroclaw:latest
 ContainerName=zeroclaw
 
 # Publish gateway port on loopback only.
@@ -17,10 +17,6 @@ PublishPort=127.0.0.1:42617:42617
 
 Volume=/var/opt/zeroclaw:/zeroclaw-data:z
 Mount=type=bind,source=/etc/zeroclaw/secret_key,destination=/zeroclaw-data/.zeroclaw/.secret_key,ro=true
-
-# Optional rolling-upgrade path — re-pull a newer image on (re)start and opt into `podman auto-update`:
-Pull=newer
-AutoUpdate=registry
 
 [Service]
 Restart=on-failure
