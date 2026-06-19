@@ -15,7 +15,7 @@ ContainerName=zeroclaw
 # Not exposed to LAN; access via Tailscale or SSH tunnel.
 PublishPort=127.0.0.1:42617:42617
 
-Volume=/var/opt/zeroclaw:/zeroclaw-data:z
+Volume=/var/opt/zeroclaw:/zeroclaw-data:z,U
 Mount=type=bind,source=/etc/zeroclaw/secret_key,destination=/zeroclaw-data/.zeroclaw/.secret_key,ro=true
 
 [Service]
